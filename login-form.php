@@ -20,6 +20,12 @@ if (isset($_POST) && array_key_exists('username', $_POST)) {
 
     $result = mysqli_query($connection, $query);
 
+
+
+
+
+
+
     if (!$result) {
         die("USER DOES NOT EXIST " . mysqli_error($connection));
     }
