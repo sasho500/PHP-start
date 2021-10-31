@@ -12,6 +12,13 @@
 
 <div class="container">
     <div class="col-sm-6">
+        <?php if (array_key_exists("error", $_GET)) { ?>
+            <p class="error"><?php echo $_GET['error'] ?></p>
+
+        <?php } else if (array_key_exists("success", $_GET)) { ?>
+            <p class="success"><?php echo $_GET['success'] ?></p>
+        <?php } ?>
+
         <form action="register-form-save.php" method="post">
             <div class="form-group">
                 <label for="username">Username</label>

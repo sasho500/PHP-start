@@ -1,4 +1,6 @@
 <?php
+include "functions.php";
+session_start();
 if (isset($_POST) && count($_POST)) {
     $user = $_POST['username'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
@@ -8,21 +10,13 @@ if (isset($_POST) && count($_POST)) {
         echo "We are connected";
         echo "<br>";
     } else {
+
         die("Database connection failed");
         echo "<br>";
     }
 
 
-    $query = "INSERT INTO users(username ,password) ";
-    $query.="VALUES ('$user','$password')";
-
-    $result = mysqli_query($connection, $query);
-    if (!$result)
-    {
-        die("Query Failed".mysqli_error($connection));
-    }
-
-    echo 'User saved';
+   create_user($user,$password,$connection);
 
     return;
 //echo $query;
