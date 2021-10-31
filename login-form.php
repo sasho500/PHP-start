@@ -1,45 +1,19 @@
 <?php
 session_start();
+include "functions.php";
 if (isset($_POST) && array_key_exists('username', $_POST)) {
 
     $connection = mysqli_connect('localhost', 'root', "", 'loginapp');
-
+    $data=$_POST;
     if (!$connection) {
         echo "No con";
         return;
     }
 
-    $username = $_POST['username'];
-
-    $password = $_POST['password'];
-    $username = stripslashes($username);
-    $password = stripslashes($password);
-    $username = mysqli_real_escape_string($connection, $username);
-    $password = mysqli_real_escape_string($connection, $password);
-    $query = "SELECT * FROM users WHERE username='$username'";
-
-    $result = mysqli_query($connection, $query);
-
-    if (!$result) {
-        die("USER DOES NOT EXIST " . mysqli_error($connection));
-    }
-
-    $userResult = $result->fetch_assoc();
 
 
-    if (password_verify($password, $userResult['password'])) {
-
-        session_destroy();
-        session_start();
-
-        $_SESSION['loggedin'] = true;
-        $_SESSION['username'] = $username;
-
-
-    }
-
+login_user($data,$connection);
 }
-
 
 ?>
 

@@ -1,64 +1,11 @@
 <?php
 session_start();
+include "functions.php";
+$is_log_in=$_SESSION;
+check_if_user_is_login($is_log_in);
 
-if (!(array_key_exists('username', $_SESSION) && $_SESSION['username'])) {
-    header("Location: http://dev.sashosocial.com/login-form.php");
-    die();
-}
-
-if (isset($_POST) && array_key_exists('password', $_POST)) {
-
-    $password = $_POST['new_password'];
-    $confirm_password = $_POST['confirm_password'];
-    $user_password = $_POST['password'];
-    $username = $_SESSION['username'];
-
-
-    $connection = mysqli_connect('localhost', 'root', "", 'loginapp');
-
-
-    if (empty($user_password)) {
-        header("Location:change_password.php?error=0ld Password is required");
-        exit();
-    }
-
-    if (empty($password)) {
-        header("Location:change_password.php?error=New Password is required");
-        exit();
-    }
-
-    if ($password !== $confirm_password) {
-        header("Location:change_password.php?error=The confirm password doesnt match");
-        exit();
-    }
-
-    $password1 = password_hash($password, PASSWORD_BCRYPT);
-    $sql = "SELECT * FROM users WHERE username='$username' ";
-    $result = mysqli_query($connection, $sql);
-
-
-    if (!$result) {
-        echo "Invalid  user";
-        session_destroy();
-        header("Location:login-form.php");
-        exit();
-    }
-
-
-    $result = $result->fetch_assoc();
-
-    if (!password_verify($user_password, $result['password'])) {
-        header("Location:change_password.php?error=0ld Password is invalid");
-        exit();
-    }
-    $sql_update_password = "UPDATE users
-            SET password='$password1'
-            WHERE  username='$username'
-            ";
-    mysqli_query($connection, $sql_update_password);
-
-    header("Location:change_password.php?success=Yor password has been change successfully1");
-}
+$data=$_POST;
+change_password($data);
 ?>
 
 

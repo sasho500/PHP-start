@@ -1,35 +1,14 @@
 <?php
+
 session_start();
+include "functions.php";
 
-if (!(array_key_exists('username', $_SESSION) && $_SESSION['username'])) {
-    header("Location: http://dev.sashosocial.com/login-form.php");
-    die();
-}
+$is_log_in = $_SESSION;
 
-if (isset($_POST) && array_key_exists('username', $_POST)) {
+check_if_user_is_login($is_log_in);
 
-    $username = $_POST['username'];
-    $old_username = $_SESSION['username'];
-    $connection = mysqli_connect('localhost', 'root', "", 'loginapp');
-
-    if (!$connection) {
-        echo "No con";
-        return;
-    }
-
-
-    $update_query = "
-        UPDATE users 
-        SET username = '$username' 
-        WHERE username='$old_username'
-    ";
-
-    $result = mysqli_query($connection, $update_query);
-    if ($result) {
-        $_SESSION['username'] = $username;
-    }
-}
-
+$data = $_POST;
+edit_profile($data);
 
 ?>
 
@@ -50,13 +29,14 @@ if (isset($_POST) && array_key_exists('username', $_POST)) {
         <?php if (array_key_exists('username', $_SESSION) && $_SESSION['username']) { ?>
             <div class="row">
                 <div class="col-6">
+
                     <div class="list-group">
                         <a href="/edit_profile.php" class="list-group-item list-group-item-action active">Edit
                             profile</a>
                         <a href="/change_password.php" class="list-group-item list-group-item-action">Change
                             password</a>
                         <a href="logout.php" class="list-group-item list-group-item-action">Logout
-                            </a>
+                        </a>
                         <a href="/delete.php" class="list-group-item list-group-item-action text-danger">Delete
                             profile</a>
                     </div>
@@ -66,6 +46,12 @@ if (isset($_POST) && array_key_exists('username', $_POST)) {
                     <form action="edit_profile.php" method="post">
                         <fieldset>
 
+                            <?php if (array_key_exists("error", $_GET)) { ?>
+                                <p class="error"><?php echo $_GET['error'] ?></p>
+
+                            <?php } else if (array_key_exists("success", $_GET)) { ?>
+                                <p class="success"><?php echo $_GET['success'] ?></p>
+                            <?php } ?>
 
                             <div class="form-group">
                                 <label for="username" class="form-label mt-4">Change Username</label>

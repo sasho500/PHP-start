@@ -1,35 +1,4 @@
-<?php
-session_start();
 
-
-if (isset($_POST) && array_key_exists('password', $_POST)) {
-    $username = $_SESSION['username'];
-    $password = $_POST['password'];
-    $connection = mysqli_connect('localhost', 'root', "", 'loginapp');
-
-    $sql = "
-    SELECT *
-    FROM users
-    WHERE  username='$username'
-    ";
-    $result = mysqli_query($connection, $sql);
-    if (!$result) {
-        echo "Invalid user";
-        exit();
-    }
-    $result = $result->fetch_assoc();
-    if (password_verify($password, $result['password'])) {
-        $sql_delete_user = "
-        DELETE FROM users
-        WHERE  username='$username' 
-        ";
-        mysqli_query($connection, $sql_delete_user);
-        session_destroy();
-        header("Location:login-form.php?success=The  user has been deleted");
-    }
-
-}
-?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -60,7 +29,7 @@ if (isset($_POST) && array_key_exists('password', $_POST)) {
             </div>
         </div>
         <div class="col-9">
-            <form action="delete.php" method="post">
+            <form action="delete_profile_action.php" method="post">
 
                 <?php if (array_key_exists("error", $_GET)) { ?>
                     <p class="error"><?php echo $_GET['error'] ?></p>

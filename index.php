@@ -19,7 +19,7 @@ echo "Connected successfully";
 </div>
 
 <div>
-    <a href="form.html">register</a>
+    <a href="register_form.php">register</a>
 </div>
 
 <div>
